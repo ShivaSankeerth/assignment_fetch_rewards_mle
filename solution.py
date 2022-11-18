@@ -1,5 +1,4 @@
 import numpy as np
-
 """
 write a program that calculates pixel coordinate values for an image 
 that is to be displayed on a two dimensional surface given the dimensions 
@@ -15,21 +14,22 @@ which are the coordinates at which to place the 9 pixels in the image such that
 they're evenly spaced within the corner points. 
 """
 def get_pixel_coordinates(image_dimensions, corner_points):
-    height, width = image_dimensions
     corner_points = np.asarray(corner_points, dtype=float)
+    x_min = corner_points[:, 0].min()
+    x_max = corner_points[:, 0].max()
+    y_min = corner_points[:, 1].min()
+    y_max = corner_points[:, 1].max()
 
-    x_min, x_max = corner_points[:, 0].min(), corner_points[:, 0].max()
-    y_min, y_max = corner_points[:, 1].min(), corner_points[:, 1].max()
-
-    x = np.linspace(start=x_min, stop=x_max, num=width)
-    y = np.linspace(start=y_min, stop=y_max, num=height)
-
+    x = np.linspace(x_min, x_max, image_dimensions[1])
+    y = np.linspace(y_min, y_max, image_dimensions[0])
+    
     x, y = np.meshgrid(x, y)
-    return np.stack((x, y), axis=-1).reshape(-1, 2)
+    return np.stack((x, y), axis=-1).reshape(-1, 2).tolist()
 
 if __name__ == '__main__':
     image_dimensions = (3, 3)
     corner_points = [(1, 1), (3, 1), (1, 3), (3, 3)]
     print(get_pixel_coordinates(image_dimensions, corner_points))
+
 
 
